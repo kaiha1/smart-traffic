@@ -13,9 +13,8 @@ export default function ReportButton( {
 
     return (
         <button
-            className ="absolute bottom-6 right-6 bg-red-600 text-white px-5
-            py-3 rounded-full shadow-lg transition  
-            "
+            className ="absolute bottom-6 right-6 z-[9999] bg-red-600 text-white px-5
+            py-3 rounded-full shadow-lg "
             onClick={() => setIsReporting(true)}
         >
             {isReporting ? "Click anywhere on the map..." : "Report an Incident"}
