@@ -18,12 +18,14 @@ type LeafletMapProps = {
         lng: number 
     } | null>
     >;
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 function MapClickHandler({
     isReporting,
     setIsReporting,
-    setSelectedLocation
+    setSelectedLocation,
+    setIsModalOpen, 
 }: {
     isReporting: boolean;
     setIsReporting: Dispatch<SetStateAction<boolean>>;
@@ -33,6 +35,7 @@ function MapClickHandler({
         lng: number 
     } | null>
     >;
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
     useMapEvents({
         click(e) {
@@ -43,6 +46,8 @@ function MapClickHandler({
             });
 
             setIsReporting(false);
+            
+            setIsModalOpen(true);
         },
     });
 
@@ -56,7 +61,8 @@ export default function LeafletMap({
     isReporting,
     setIsReporting,
     selectedLocation,
-    setSelectedLocation
+    setSelectedLocation,
+    setIsModalOpen,
 }: LeafletMapProps) {
     return (
         <MapContainer
@@ -73,6 +79,7 @@ export default function LeafletMap({
                 isReporting={isReporting}
                 setIsReporting={setIsReporting}
                 setSelectedLocation={setSelectedLocation}
+                setIsModalOpen={setIsModalOpen}
             />
             {selectedLocation && (
                 <Marker position={[
