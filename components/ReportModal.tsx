@@ -13,12 +13,12 @@ export default function ReportModal({
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
-            <div className="bg-white rounded-xl p-6 w-[400px]" shadow-xl>
+            <div className="bg-white text-black rounded-xl p-6 w-[400px]" shadow-xl>
                 <h2 className="text-2xl font-bold mb-4" >
                     Report an Incident
                 </h2>
 
-                <label className="block mb-2 font-medium">
+                <label className="block mb-2 font-medium text-black">
                     Category
                 </label>
 
@@ -29,7 +29,7 @@ export default function ReportModal({
                     <option>Hazard</option>
                 </select>
 
-                <label className="block mb-2 font-medium">
+                <label className="block mb-2 font-medium text-black">
                     Description
                 </label>
 
