@@ -1,7 +1,7 @@
 "use client";
 
 import ReportModal from "./ReportModal"; 
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import ReportButton from "./ReportButton";  
 
@@ -22,6 +22,19 @@ export default function Map() {
   const [isReporting, setIsReporting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
+
+  useEffect(() => {
+    const savedReports = localStorage.getItem("reports");
+
+    if (savedReports) {
+      setReports(JSON.parse(savedReports));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("reports", JSON.stringify(reports));
+  }, [reports]);
+
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
