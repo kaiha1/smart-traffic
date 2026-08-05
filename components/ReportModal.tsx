@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 type ReportModalProps = {
     isOpen : boolean; 
     onClose: () => void;
@@ -9,6 +11,10 @@ export default function ReportModal({
     isOpen,
     onClose,
 }: ReportModalProps) {
+    
+    const [category, setCategory] = useState("Accident");
+    const [description, setDescription] = useState("");
+
     if (!isOpen) return null;
 
     return (
@@ -22,7 +28,11 @@ export default function ReportModal({
                     Category
                 </label>
 
-                <select className="w-full border rounded-lg p-2 mb-4">
+                <select 
+                    className="w-full border rounded-lg p-2 mb-4"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                >
                     <option>Accident</option>
                     <option>Traffic</option>
                     <option>Road Work</option>
@@ -34,6 +44,8 @@ export default function ReportModal({
                 </label>
 
                 <textarea 
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full border rounded-lg p-2 mb-4"
                 rows={4}
                 placeholder="Describe what happened..."
@@ -47,6 +59,15 @@ export default function ReportModal({
                             Cancel
                     </button>
                     <button
+                        onClick={() => {
+                            console.log({
+                                category,
+                                description,
+                            });
+
+                            onClose();
+                        }}
+                        
                         className="px-4 py-2 rounded-lg bg-blue-600 text-white"
                     >
                         Submit
