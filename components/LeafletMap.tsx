@@ -5,6 +5,13 @@ import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import { MapContainer, useMapEvents, Marker, TileLayer } from "react-leaflet";
 import { Dispatch, SetStateAction } from "react";
+type Report = {
+    id: number;
+    lat: number;
+    lng: number;
+    category: string;
+    description: string;
+};
 
 type LeafletMapProps = {
     isReporting: boolean;
@@ -19,6 +26,7 @@ type LeafletMapProps = {
     } | null>
     >;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+    reports: Report[];
 }
 
 function MapClickHandler({
@@ -63,6 +71,7 @@ export default function LeafletMap({
     selectedLocation,
     setSelectedLocation,
     setIsModalOpen,
+    reports,
 }: LeafletMapProps) {
     return (
         <MapContainer
@@ -81,13 +90,13 @@ export default function LeafletMap({
                 setSelectedLocation={setSelectedLocation}
                 setIsModalOpen={setIsModalOpen}
             />
-            {selectedLocation && (
-                <Marker position={[
-                    selectedLocation.lat, 
-                    selectedLocation.lng
-                ]} 
+            {reports.map((report) => (
+                <Marker
+                    key={report.id}
+                    position={[report.lat, report.lng]}
                 />
-            )}
+            ))}
+            
         </MapContainer>
     );
 }

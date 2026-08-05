@@ -2,14 +2,32 @@
 
 import { useState } from "react";
 
+
+type Report = {
+    id: number;
+    lat: number;
+    lng: number;
+    category: string;
+    description: string;
+};
+
 type ReportModalProps = {
     isOpen : boolean; 
     onClose: () => void;
+
+    selectedLocation: {
+        lat: number;
+        lng: number;
+    } | null;
+
+    setReports: React.Dispatch<React.SetStateAction<Report[]>>;
 };
 
 export default function ReportModal({
     isOpen,
     onClose,
+    selectedLocation,
+    setReports
 }: ReportModalProps) {
     
     const [category, setCategory] = useState("Accident");
@@ -19,7 +37,7 @@ export default function ReportModal({
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
-            <div className="bg-white text-black rounded-xl p-6 w-[400px]" shadow-xl>
+            <div className="bg-white text-black rounded-xl p-6 w-[400px] shadow-xl">
                 <h2 className="text-2xl font-bold mb-4" >
                     Report an Incident
                 </h2>
@@ -60,14 +78,26 @@ export default function ReportModal({
                     </button>
                     <button
                         onClick={() => {
-                            console.log({
-                                category,
-                                description,
-                            });
+                            if (!selectedLocation) return;
+                                if (!selectedLocation) return;
 
-                            onClose();
-                        }}
-                        
+                                setReports((prev) => [
+                                    ...prev,
+                                    {
+                                        id: Date.now(),
+                                        lat: selectedLocation.lat,
+                                        lng: selectedLocation.lng,
+                                        category,
+                                        description,
+                                    },
+                                ]);
+
+                                setDescription("");
+                                setCategory("Accident");
+
+                                onClose();
+                            }}
+
                         className="px-4 py-2 rounded-lg bg-blue-600 text-white"
                     >
                         Submit

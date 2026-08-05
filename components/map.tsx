@@ -12,8 +12,16 @@ loading: () => <p>Loading map...</p>
 });
 
 export default function Map() {
+  type Report = {
+    id: number;
+    lat: number;
+    lng: number;
+    category: string;
+    description: string;
+  }
   const [isReporting, setIsReporting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reports, setReports] = useState<Report[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -27,6 +35,7 @@ export default function Map() {
       selectedLocation={selectedLocation}
       setSelectedLocation={setSelectedLocation}
       setIsModalOpen={setIsModalOpen}
+      reports={reports}
       />  
       
       <ReportButton 
@@ -37,6 +46,8 @@ export default function Map() {
       <ReportModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        selectedLocation={selectedLocation}
+        setReports={setReports}
       />
     </div>
   );
