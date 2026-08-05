@@ -3,7 +3,11 @@
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import { MapContainer, useMapEvents, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, 
+        useMapEvents, 
+        Marker, 
+        TileLayer,
+        Popup } from "react-leaflet";
 import { Dispatch, SetStateAction } from "react";
 type Report = {
     id: number;
@@ -94,7 +98,17 @@ export default function LeafletMap({
                 <Marker
                     key={report.id}
                     position={[report.lat, report.lng]}
-                />
+                >
+                    <Popup>
+                        <div className="text-black">
+                            <h3 className="font-bbold text-lg">
+                                {report.category}
+                                </h3>
+                                
+                            <p>{report.description}</p>
+                        </div>
+                    </Popup>
+                </Marker>
             ))}
             
         </MapContainer>
