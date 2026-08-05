@@ -23,6 +23,8 @@ export default function Map() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
 
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
     const [selectedLocation, setSelectedLocation] = useState<{
     lat: number;
     lng: number;
@@ -63,17 +65,41 @@ export default function Map() {
 
   }, []);
 
+    const filteredReports = 
+      selectedCategory === "All" 
+      ? reports 
+      : reports.filter(
+        (report) => report.category === selectedCategory
+      );
 
 
   return (
-    <div className=" relative w-full h-[600px]  rounded-xl overflow-hidden">
+    <div className="w-full">
+    <div className="flex gap-2 mb-4 justify-center flex-wrap">
+  {["All", "Accident", "Traffic", "Road Work", "Hazard"].map(
+    (category) => (
+      <button
+        key={category}
+        onClick={() => setSelectedCategory(category)}
+        className={`px-4 py-2 rounded-lg transition ${
+          selectedCategory === category
+            ? "bg-blue-600 text-white"
+            : "bg-gray-200 text-black hover:bg-gray-300"
+        }`}
+      >
+        {category}
+      </button>
+    )
+  )}
+</div>
+    <div className= " relative h-[600px] rounded-xl overflow-hidden">
       <LeafletMap 
       isReporting={isReporting}
       setIsReporting={setIsReporting}
       selectedLocation={selectedLocation}
       setSelectedLocation={setSelectedLocation}
       setIsModalOpen={setIsModalOpen}
-      reports={reports}
+      reports={filteredReports}
       userLocation={userLocation}
       />  
       
@@ -89,6 +115,7 @@ export default function Map() {
         setReports={setReports}
       />
     </div>
-  );
+  </div>
+);
 }
      
