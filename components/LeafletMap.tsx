@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import { MapContainer, 
+        useMap,
         useMapEvents, 
         Marker, 
         TileLayer,
@@ -30,7 +31,12 @@ type LeafletMapProps = {
     } | null>
     >;
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+
     reports: Report[];
+    userLocation: {
+        lat: number;
+        lng: number;
+    } | null;
 }
 
 function MapClickHandler({
@@ -66,6 +72,21 @@ function MapClickHandler({
     return null;
 }
 
+function MapUpdater({
+    userLocation,
+}: {
+    userLocation: {
+        lat:number;
+        lng: number;
+    } | null;
+}) {
+    const map = useMap();
+    
+    if (userLocation) {
+        map.flyTo([userLocation.lat, userLocation.lng], 15);
+    }
+    return null;
+}
 
 
 
@@ -76,10 +97,15 @@ export default function LeafletMap({
     setSelectedLocation,
     setIsModalOpen,
     reports,
+    userLocation,
 }: LeafletMapProps) {
     return (
         <MapContainer
-        center={[31.7917, -7.0926]} // Centered on Morocco
+        center= {
+            userLocation
+            ? [userLocation.lat, userLocation.lng]
+            : [51.505, -0.09]
+        }
         zoom={6}
         style={{ height: "100%  ", width : "100%" }}
 
@@ -88,6 +114,10 @@ export default function LeafletMap({
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; OpenStreetMap contributors'
             />
+
+            <MapUpdater userLocation={userLocation} />
+
+
             <MapClickHandler
                 isReporting={isReporting}
                 setIsReporting={setIsReporting}
@@ -101,10 +131,10 @@ export default function LeafletMap({
                 >
                     <Popup>
                         <div className="text-black">
-                            <h3 className="font-bbold text-lg">
+                            <h3 className="font-bold text-lg">
                                 {report.category}
                                 </h3>
-                                
+
                             <p>{report.description}</p>
                         </div>
                     </Popup>

@@ -23,6 +23,16 @@ export default function Map() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reports, setReports] = useState<Report[]>([]);
 
+    const [selectedLocation, setSelectedLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+
   useEffect(() => {
     const savedReports = localStorage.getItem("reports");
 
@@ -35,10 +45,25 @@ export default function Map() {
     localStorage.setItem("reports", JSON.stringify(reports));
   }, [reports]);
 
-  const [selectedLocation, setSelectedLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("could not get user location:", error);
+        }
+        
+      );
+
+  }, []);
+
+
 
   return (
     <div className=" relative w-full h-[600px]  rounded-xl overflow-hidden">
@@ -49,6 +74,7 @@ export default function Map() {
       setSelectedLocation={setSelectedLocation}
       setIsModalOpen={setIsModalOpen}
       reports={reports}
+      userLocation={userLocation}
       />  
       
       <ReportButton 
