@@ -74,25 +74,41 @@ export default function Map() {
 
 
   return (
-    <div className="w-full">
-    <div className="flex gap-2 mb-4 justify-center flex-wrap">
-  {["All", "Accident", "Traffic", "Road Work", "Hazard"].map(
-    (category) => (
+    <div className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-6">
+<div className="mb-6 flex flex-col items-center">
+  <h2 className="text-3xl font-extrabold tracking-tight text-white">
+  Traffic Reports
+</h2>
+
+<p className="mt-2 mb-6 text-gray-300 text-lg">
+  Filter incidents by category
+</p>
+
+  <div className="flex flex-wrap justify-center gap-3">
+    {[
+      { label: "All", icon: "🌍" },
+      { label: "Accident", icon: "🚗" },
+      { label: "Traffic", icon: "🚦" },
+      { label: "Road Work", icon: "🚧" },
+      { label: "Hazard", icon: "⚠️" },
+    ].map(({ label, icon }) => (
       <button
-        key={category}
-        onClick={() => setSelectedCategory(category)}
-        className={`px-4 py-2 rounded-lg transition ${
-          selectedCategory === category
-            ? "bg-blue-600 text-white"
-            : "bg-gray-200 text-black hover:bg-gray-300"
+        key={label}
+        onClick={() => setSelectedCategory(label)}
+        className={`flex items-center gap-2 rounded-full px-5 py-2.5 font-medium transition-all duration-200
+        ${
+          selectedCategory === label
+            ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg scale-105"
+            : "bg-white text-gray-700 border border-gray-200 shadow hover:shadow-md hover:-translate-y-0.5 hover:bg-gray-50"
         }`}
       >
-        {category}
+        <span className="text-lg">{icon}</span>
+        {label}
       </button>
-    )
-  )}
+    ))}
+  </div>
 </div>
-    <div className= " relative h-[600px] rounded-xl overflow-hidden">
+    <div className="relative h-[650px] rounded-3xl overflow-hidden shadow-2xl">
       <LeafletMap 
       isReporting={isReporting}
       setIsReporting={setIsReporting}
