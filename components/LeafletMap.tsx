@@ -9,7 +9,7 @@ import { MapContainer,
         Marker, 
         TileLayer,
         Popup } from "react-leaflet";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 type Report = {
     id: number;
     lat: number;
@@ -37,6 +37,9 @@ type LeafletMapProps = {
         lat: number;
         lng: number;
     } | null;
+
+    goToUserLocation: boolean;
+    setGoToUserLocation: Dispatch<SetStateAction<boolean>>;
 }
 
 function MapClickHandler({
@@ -72,20 +75,30 @@ function MapClickHandler({
     return null;
 }
 
+
 function MapUpdater({
-    userLocation,
+  userLocation,
+  goToUserLocation,
+  setGoToUserLocation,
 }: {
-    userLocation: {
-        lat:number;
-        lng: number;
-    } | null;
+  userLocation: {
+    lat: number;
+    lng: number;
+  } | null;
+  goToUserLocation: boolean;
+  setGoToUserLocation: Dispatch<SetStateAction<boolean>>;
 }) {
-    const map = useMap();
-    
-    if (userLocation) {
-        map.flyTo([userLocation.lat, userLocation.lng], 15);
+  const map = useMap();
+
+  useEffect(() => {
+    if (goToUserLocation && userLocation) {
+      map.flyTo([userLocation.lat, userLocation.lng], 15);
+
+      setGoToUserLocation(false);
     }
-    return null;
+  }, [goToUserLocation, userLocation, map, setGoToUserLocation]);
+
+  return null;
 }
 
 
@@ -98,6 +111,8 @@ export default function LeafletMap({
     setIsModalOpen,
     reports,
     userLocation,
+    goToUserLocation,
+    setGoToUserLocation,
 }: LeafletMapProps) {
     return (
         <MapContainer
@@ -115,7 +130,11 @@ export default function LeafletMap({
                 attribution='&copy; OpenStreetMap contributors'
             />
 
-            <MapUpdater userLocation={userLocation} />
+            <MapUpdater
+                userLocation={userLocation}
+                goToUserLocation={goToUserLocation}
+                setGoToUserLocation={setGoToUserLocation}
+            />
 
 
             <MapClickHandler

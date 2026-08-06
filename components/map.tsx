@@ -4,7 +4,7 @@ import ReportModal from "./ReportModal";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import ReportButton from "./ReportButton";  
-
+import MyLocationButton from "./MyLocationButton";
 
 const LeafletMap = dynamic(() => import("./LeafletMap"), 
 { ssr: false,
@@ -34,6 +34,8 @@ export default function Map() {
     lat: number;
     lng: number;
   } | null>(null);
+
+  const [goToUserLocation, setGoToUserLocation] = useState(false);
 
   useEffect(() => {
     const savedReports = localStorage.getItem("reports");
@@ -117,12 +119,18 @@ export default function Map() {
       setIsModalOpen={setIsModalOpen}
       reports={filteredReports}
       userLocation={userLocation}
+      goToUserLocation={goToUserLocation}
+      setGoToUserLocation={setGoToUserLocation}
       />  
       
       <ReportButton 
         isReporting={isReporting}
         setIsReporting={setIsReporting}
       />
+
+      <MyLocationButton
+        onClick={() => setGoToUserLocation(true)}
+/>
 
       <ReportModal
         isOpen={isModalOpen}
