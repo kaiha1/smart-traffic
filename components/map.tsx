@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import ReportButton from "./ReportButton";  
 import MyLocationButton from "./MyLocationButton";
+import EmergencyButton from "./EmergencyButton";
+import EmergencyModal from "./EmergencyModal";
 
 const LeafletMap = dynamic(() => import("./LeafletMap"), 
 { ssr: false,
@@ -36,6 +38,9 @@ export default function Map() {
   } | null>(null);
 
   const [goToUserLocation, setGoToUserLocation] = useState(false);
+
+  const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
+
 
   useEffect(() => {
     const savedReports = localStorage.getItem("reports");
@@ -138,8 +143,18 @@ export default function Map() {
         selectedLocation={selectedLocation}
         setReports={setReports}
       />
+    
+      <EmergencyButton
+        onClick={() => setIsEmergencyOpen(true)}
+      />  
+
+      <EmergencyModal
+      isOpen={isEmergencyOpen}
+      onClose={() => setIsEmergencyOpen(false)}
+      />  
+      
     </div>
   </div>
-);
+  );
 }
-     
+ 
