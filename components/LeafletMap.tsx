@@ -10,6 +10,7 @@ import { MapContainer,
         TileLayer,
         Popup } from "react-leaflet";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import L from "leaflet";
 type Report = {
     id: number;
     lat: number;
@@ -102,6 +103,61 @@ function MapUpdater({
 }
 
 
+const redIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+const orangeIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+const yellowIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+const violetIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+function getMarkerIcon(category: string) {
+  switch (category) {
+    case "Accident":
+      return redIcon;
+
+    case "Traffic":
+      return orangeIcon;
+
+    case "Road Work":
+      return yellowIcon;
+
+    case "Hazard":
+      return violetIcon;
+
+    default:
+      return redIcon;
+  }
+}
+
 
 export default function LeafletMap({
     isReporting,
@@ -147,12 +203,13 @@ export default function LeafletMap({
                 <Marker
                     key={report.id}
                     position={[report.lat, report.lng]}
+                    icon={getMarkerIcon(report.category)}
                 >
                     <Popup>
                         <div className="text-black">
                             <h3 className="font-bold text-lg">
-                                {report.category}
-                                </h3>
+                            {report.category}
+                        </h3>
 
                             <p>{report.description}</p>
                         </div>
