@@ -148,6 +148,23 @@ export default function Map() {
         onClick={() => setIsEmergencyOpen(true)}
       />  
 
+    {reports.length > 0 && (
+      <button
+        onClick={() => {
+          if (confirm("Are you sure you want to delete all reports?")) {
+            setReports([]);
+            localStorage.removeItem("reports");
+          }
+        }}
+        className="absolute top-6 right-6 z-[1000]
+        bg-red-600 hover:bg-red-700
+        text-white px-5 py-3 rounded-full
+        shadow-xl font-semibold transition-all duration-300 hover:scale-105"
+      >
+        🗑 Clear Reports
+      </button>
+      )}
+
       <EmergencyModal
       isOpen={isEmergencyOpen}
       onClose={() => setIsEmergencyOpen(false)}
